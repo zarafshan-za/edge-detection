@@ -4,3 +4,18 @@ Assignment 1 for the course Introduction to Computer Vision. This is a Python ba
 - **Canny**: Lower/upper thresholds, Gaussian blur kernel size, and sigma.  
 - **Sobel**: Kernel size and gradient direction (X, Y, or both).  
 - **Laplacian**: Kernel size.
+## Features
+- Multiple edge detection algorithms (Sobel, Laplacian, Canny)
+- Real-time parameter adjustment
+- Dark/Light theme support
+- Image upload and export functionality
+- Clean, modern UI
+## Requirements
+- Python 3.7+
+- OpenCV
+- PyQt5
+- NumPy
+## Installation
+1. Clone this repository:
+```bash
+git clone https://github.com/yourusername/edge-detection.git
