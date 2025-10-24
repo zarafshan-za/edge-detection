@@ -15,7 +15,20 @@ Assignment 1 for the course Introduction to Computer Vision. This is a Python ba
 - OpenCV
 - PyQt5
 - NumPy
-## Installation
+## Installation & Usage
 1. Clone this repository:
 ```bash
 git clone https://github.com/yourusername/edge-detection.git
+```
+2. Enter the project folder
+```bash
+cd edge-detector
+```
+4. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+6. Launch the application
+```bash
+python main.py
+```
