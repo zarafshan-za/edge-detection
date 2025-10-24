@@ -1,0 +1,263 @@
+/* =====================================================
+   UNIVERSAL BASE STYLES
+   ===================================================== */
+* {
+    font-family: "Segoe UI", "Roboto", sans-serif;
+    font-size: 14px;
+    border-radius: 6px;
+}
+
+/* Transition smoothing */
+QPushButton, QComboBox, QSpinBox, QDoubleSpinBox, QSlider {
+    transition: all 0.25s ease-in-out;
+}
+
+/* =====================================================
+   DARK THEME
+   ===================================================== */
+[DARK_THEME="true"] QWidget {
+    background-color: #1e1e22;
+    color: #e8e8e8;
+}
+
+/* Buttons */
+[DARK_THEME="true"] QPushButton {
+    background-color: #2c2c34;
+    color: #f0f0f0;
+    border: 1px solid #3d3d45;
+    padding: 8px 16px;
+    font-weight: 500;
+}
+[DARK_THEME="true"] QPushButton:hover {
+    background-color: #3b3b46;
+    border-color: #9b59b6;
+    color: #ffffff;
+}
+[DARK_THEME="true"] QPushButton:pressed {
+    background-color: #292933;
+    border-color: #7a3fa1;
+}
+[DARK_THEME="true"] QPushButton:focus {
+    outline: none;
+    box-shadow: 0 0 5px #9b59b6;
+}
+
+/* Labels */
+[DARK_THEME="true"] QLabel {
+    font-weight: 600;
+    color: #efefef;
+}
+
+/* Input controls */
+[DARK_THEME="true"] QComboBox,
+[DARK_THEME="true"] QSpinBox,
+[DARK_THEME="true"] QDoubleSpinBox {
+    background-color: #2a2a32;
+    color: #e6e6e6;
+    border: 1px solid #3c3c45;
+    padding: 6px;
+}
+[DARK_THEME="true"] QComboBox:hover,
+[DARK_THEME="true"] QSpinBox:hover,
+[DARK_THEME="true"] QDoubleSpinBox:hover {
+    border-color: #9b59b6;
+}
+[DARK_THEME="true"] QComboBox:focus,
+[DARK_THEME="true"] QSpinBox:focus,
+[DARK_THEME="true"] QDoubleSpinBox:focus {
+    border: 1px solid #9b59b6;
+    box-shadow: 0 0 6px #9b59b6;
+}
+
+/* Slider */
+[DARK_THEME="true"] QSlider::groove:horizontal {
+    height: 8px;
+    background: #33333b;
+    border-radius: 4px;
+}
+[DARK_THEME="true"] QSlider::handle:horizontal {
+    background: #9b59b6;
+    border: 1px solid #6e3f8e;
+    width: 16px;
+    margin: -4px 0;
+    border-radius: 8px;
+}
+[DARK_THEME="true"] QSlider::handle:horizontal:hover {
+    background: #b07ed4;
+}
+
+/* GroupBox */
+[DARK_THEME="true"] QGroupBox {
+    margin-top: 12px;
+    border: 1px solid #3c3c45;
+    border-radius: 8px;
+    padding: 10px;
+}
+[DARK_THEME="true"] QGroupBox::title {
+    color: #b085d6;
+    font-weight: 600;
+}
+
+/* Combo dropdown */
+[DARK_THEME="true"] QComboBox QAbstractItemView {
+    background-color: #2a2a32;
+    selection-background-color: #9b59b6;
+    selection-color: #fff;
+    border-radius: 4px;
+}
+
+/* =====================================================
+   LIGHT THEME
+   ===================================================== */
+[DARK_THEME="false"] QWidget {
+    background-color: #f8f8fb;
+    color: #222;
+}
+
+/* Buttons */
+[DARK_THEME="false"] QPushButton {
+    background-color: #e8e5f7;
+    color: #222;
+    padding: 8px 16px;
+    border: 1px solid #c8c2e3;
+    font-weight: 500;
+}
+[DARK_THEME="false"] QPushButton:hover {
+    background-color: #dcd4f2;
+    border-color: #7b4bb7;
+}
+[DARK_THEME="false"] QPushButton:pressed {
+    background-color: #cbb8ea;
+    border-color: #6c3ea5;
+}
+[DARK_THEME="false"] QPushButton:focus {
+    outline: none;
+    box-shadow: 0 0 5px #9b59b6;
+}
+
+/* Labels */
+[DARK_THEME="false"] QLabel {
+    font-weight: 600;
+    color: #111;
+}
+
+/* Input controls */
+[DARK_THEME="false"] QComboBox,
+[DARK_THEME="false"] QSpinBox,
+[DARK_THEME="false"] QDoubleSpinBox {
+    background-color: #ffffff;
+    color: #111;
+    border: 1px solid #d2cde8;
+    padding: 6px;
+}
+[DARK_THEME="false"] QComboBox:hover,
+[DARK_THEME="false"] QSpinBox:hover,
+[DARK_THEME="false"] QDoubleSpinBox:hover {
+    border-color: #9b59b6;
+}
+[DARK_THEME="false"] QComboBox:focus,
+[DARK_THEME="false"] QSpinBox:focus,
+[DARK_THEME="false"] QDoubleSpinBox:focus {
+    border: 1px solid #9b59b6;
+    box-shadow: 0 0 6px #c8a2e6;
+}
+
+/* Slider */
+[DARK_THEME="false"] QSlider::groove:horizontal {
+    height: 8px;
+    background: #ddd8f2;
+    border-radius: 4px;
+}
+[DARK_THEME="false"] QSlider::handle:horizontal {
+    background: #9b59b6;
+    border: 1px solid #7b4bb7;
+    width: 16px;
+    margin: -4px 0;
+    border-radius: 8px;
+}
+[DARK_THEME="false"] QSlider::handle:horizontal:hover {
+    background: #b488d6;
+}
+
+/* GroupBox */
+[DARK_THEME="false"] QGroupBox {
+    margin-top: 12px;
+    border: 1px solid #d2cde8;
+    border-radius: 8px;
+    padding: 10px;
+}
+[DARK_THEME="false"] QGroupBox::title {
+    color: #7b4bb7;
+    font-weight: 600;
+}
+
+/* Combo dropdown */
+[DARK_THEME="false"] QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    selection-background-color: #d6c3f0;
+    selection-color: #000;
+    border-radius: 4px;
+}
+
+/* Force all backgrounds to respect theme */
+QMainWindow, QWidget, QFrame {
+    background-color: transparent;
+}
+
+[DARK_THEME="true"] QMainWindow,
+[DARK_THEME="true"] QWidget,
+[DARK_THEME="true"] QFrame {
+    background-color: #1e1e22;
+}
+
+[DARK_THEME="false"] QMainWindow,
+[DARK_THEME="false"] QWidget,
+[DARK_THEME="false"] QFrame {
+    background-color: #f8f8fb;
+}
+
+QWidget {
+        font-size: 9pt;
+    }
+    QPushButton {
+        font-size: 11pt;
+        font-weight: bold;
+    }
+
+/* =====================================================
+   WINDOW BACKGROUND FIX
+   ===================================================== */
+
+/* Main window background */
+QMainWindow[DARK_THEME="true"] {
+    background-color: #1e1e22;
+}
+
+QMainWindow[DARK_THEME="false"] {
+    background-color: #f8f8fb;
+}
+
+/* Dialog and widget backgrounds */
+QDialog[DARK_THEME="true"],
+QWidget#EdgeExplorer[DARK_THEME="true"] {
+    background-color: #1e1e22;
+}
+
+QDialog[DARK_THEME="false"],
+QWidget#EdgeExplorer[DARK_THEME="false"] {
+    background-color: #f8f8fb;
+}
+
+/* Ensure all child widgets inherit background */
+QWidget {
+    background-color: transparent;
+}
+
+/* Specific fix for the outer window area */
+EdgeExplorer[DARK_THEME="true"] {
+    background-color: #1e1e22;
+}
+
+EdgeExplorer[DARK_THEME="false"] {
+    background-color: #f8f8fb;
+}
