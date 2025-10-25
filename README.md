@@ -24,11 +24,24 @@ git clone https://github.com/yourusername/edge-detection.git
 ```bash
 cd edge-detector
 ```
-4. Install dependencies
+3. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
-6. Launch the application
+Or install manually
+```bash
+pip install opencv-python pyqt5 numpy
+```
+4. Launch the application
 ```bash
 python main.py
 ```
+## Screenshots
+1. Application in dark mode
+<img width="959" height="506" alt="image" src="https://github.com/user-attachments/assets/79c918f6-3c6d-4add-a940-8ada46b36adb" />
+2. Sobel filter on an image. UI in light mode
+<img width="959" height="506" alt="image" src="https://github.com/user-attachments/assets/bff90ee8-b04c-4b8b-985f-81037d7ded20" />
+3. Laplacian filter on an image. UI in dark mode
+<img width="959" height="506" alt="image" src="https://github.com/user-attachments/assets/bce24d4a-5fc2-4a9f-87da-6af8c07128e1" />
+4. Save image output window
+<img width="959" height="505" alt="image" src="https://github.com/user-attachments/assets/9398dd49-c597-49a6-b7a7-51d701e58b58" />
