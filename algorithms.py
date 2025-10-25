@@ -41,6 +41,8 @@ def sobel_edges(src_bgr, kernel_size=3, direction='both'):
     k = ensure_odd(kernel_size)
     k = max(1, k)
     # Compute gradients in x and y directions
+    # Sobel function from OpenCV (available in official docs)
+    # https://docs.opencv.org/4.x/d2/d2c/tutorial_sobel_derivatives.html
     dx = cv2.Sobel(gray, cv2.CV_16S, 1, 0, ksize=k)
     dy = cv2.Sobel(gray, cv2.CV_16S, 0, 1, ksize=k)
     # Convert to absolute then 8 bit for x and y
@@ -65,6 +67,8 @@ def laplacian_edges(src_bgr, kernel_size=3):
     gray = cv2.cvtColor(src_bgr, cv2.COLOR_BGR2GRAY) # BGR to Grayscale
     k = ensure_odd(kernel_size)
     # Apply laplacian operator i.e 2nd derivative
+    # Laplacian function available in official OpenCV docs
+    # https://docs.opencv.org/4.x/d5/db5/tutorial_laplace_operator.html
     lap = cv2.Laplacian(gray, cv2.CV_16S, ksize=k) # 16 bit signed output
     lap_abs = cv2.convertScaleAbs(lap)
     return to_display_bgr(lap_abs)
@@ -87,6 +91,8 @@ def canny_edges(src_bgr, low_threshold=50, high_threshold=150, blur_ksize=5, sig
     ht = int(max(0, min(255, high_threshold)))
     if ht < lt: # If thresholds reversed, swap them
         lt, ht = ht, lt
+    # Canny function from OpenCV docs
+    # https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html
     edges = cv2.Canny(gray, lt, ht)
     return to_display_bgr(edges)
 
