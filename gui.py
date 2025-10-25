@@ -1,6 +1,4 @@
-# gui.py
-# PyQt5 GUI for interactive edge detection experiment.
-# Requires: PyQt5, numpy, opencv-python
+# Imports
 
 from PyQt5.QtWidgets import (
     QWidget, QApplication, QLabel, QPushButton, QFileDialog, QComboBox,
@@ -14,6 +12,7 @@ import cv2
 import numpy as np
 from algorithms import sobel_edges, laplacian_edges, canny_edges, scale_for_display
 
+# stylesheet made and added to easily change style of the UI without disrupting the main code. stylesheet added on the suggestion of CHATGPT
 def load_stylesheet():
     """Read style.qss and return its contents as a string."""
     try:
@@ -26,77 +25,81 @@ def load_stylesheet():
 class EdgeExplorer(QWidget):
     def __init__(self, display_size=480):
         super().__init__()
-        self.setWindowTitle("Edge Detection Explorer")
-        self.setObjectName("EdgeExplorer")
+        self.setWindowTitle("Edge Detection")
+        self.setObjectName("EdgeExplorer") # For CSS targeting. the outer parts of the window did not change colour according to theme setting. fixed with DEEPSEEK.
         self.display_w = display_size
         self.display_h = display_size
 
-        # runtime image storage (BGR numpy)
+        # runtime image storage (BGR numpy), storing input and output image
         self.original = None
         self.processed = None
 
-        self._build_ui()
-        self._connect_signals()
+        self._build_ui() # builds all UI elements
+        self._connect_signals() # Conneting buttons to functions
         self.dark_mode = True
-        self.apply_theme(dark=True)
+        self.apply_theme(dark=True) # applying dark theme as a default
 
-        # debounce timer for real-time responsiveness without flooding processing
+        # debounce timer for preventing rapid repeated processing
         self.update_timer = QTimer()
-        self.update_timer.setInterval(80)  # ms
+        self.update_timer.setInterval(80)  
         self.update_timer.setSingleShot(True)
         self.update_timer.timeout.connect(self._process_and_update_output)
 
-        # initial UI sizing
+        # initial window size
         self.resize(1200, 750)
 
     def apply_theme(self, dark=True):
-        """Apply dark or light theme globally from style.qss"""
+        """Apply dark or light theme globally from style.qss (stylesheet)"""
         app = QApplication.instance()
         app.setProperty("DARK_THEME", "true" if dark else "false")
         self.setProperty("DARK_THEME", "true" if dark else "false")
 
         style = load_stylesheet()
         app.setStyleSheet("")  # reset
-        app.setStyleSheet(style)
+        app.setStyleSheet(style) # apply new style
         
-        # Force style refresh (keep these lines)
+        # Force refresh the UI
         app.style().unpolish(self)
         app.style().polish(self)
         self.update()
 
+    # function for building the UI elements
     def _build_ui(self):
-        # --- Top controls: upload and theme toggle
+        # Upload image button
         upload_btn = QPushButton("Upload Image")
         upload_btn.setObjectName("upload_btn")
         upload_btn.setToolTip("Upload an image (JPG, PNG, BMP)")
         upload_btn.setCursor(Qt.PointingHandCursor)
         self.upload_btn = upload_btn
 
-        # Save Button
+        # Save output image button
         save_btn = QPushButton("Save Output Image")
         save_btn.setObjectName("save_btn")
         save_btn.setToolTip("Save the processed output image")
         save_btn.setCursor(Qt.PointingHandCursor)
         self.save_btn = save_btn
 
+        # Toggle theme button
         self.theme_toggle = QPushButton("Light Mode")
         self.theme_toggle.setCheckable(True)
         self.theme_toggle.setCursor(Qt.PointingHandCursor)
 
+        # for horizontal placement of buttons
         top_bar = QHBoxLayout()
         top_bar.addWidget(upload_btn)
         top_bar.addWidget(save_btn)
         top_bar.addStretch(1)
         top_bar.addWidget(self.theme_toggle)
 
-        # --- Image displays (side-by-side) inside frames
-        # Input panel (widget wrapper)
+        # Image displays (side-by-side)
+        # Input part
         input_group = QVBoxLayout()
         input_label = QLabel("Input")
         input_label.setAlignment(Qt.AlignCenter)
         input_label.setFont(QFont("", 11, QFont.Bold))
         self.input_title = input_label
 
+        # input image display, resizing and adding a border
         self.input_display = QLabel()
         self.input_display.setMinimumSize(300, 300)
         self.input_display.setAlignment(Qt.AlignCenter)
@@ -106,17 +109,20 @@ class EdgeExplorer(QWidget):
         input_group.addWidget(input_label)
         input_group.addWidget(self.input_display)
 
+        # creating widget
         input_widget = QWidget()
         input_widget.setLayout(input_group)
+        # allows resizing
         input_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-        # Output panel (widget wrapper)
+        # Output part
         output_group = QVBoxLayout()
         output_label = QLabel("Output")
         output_label.setAlignment(Qt.AlignCenter)
         output_label.setFont(QFont("", 11, QFont.Bold))
         self.output_title = output_label
 
+        # output image displauu, setting size and adding border
         self.output_display = QLabel()
         self.output_display.setMinimumSize(300, 300)
         self.output_display.setAlignment(Qt.AlignCenter)
@@ -126,11 +132,12 @@ class EdgeExplorer(QWidget):
         output_group.addWidget(output_label)
         output_group.addWidget(self.output_display)
 
+        # creating widget
         output_widget = QWidget()
         output_widget.setLayout(output_group)
         output_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-        # images layout - add input/output widgets directly with equal stretch
+        # images layout add input and output widgets directly with equal stretch
         images_layout = QHBoxLayout()
         images_layout.addWidget(input_widget, 1)
         images_layout.addSpacing(12)
@@ -140,13 +147,13 @@ class EdgeExplorer(QWidget):
         images_container.setLayout(images_layout)
         images_container.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-        # --- Controls panel (algorithm selector and parameter controls)
+        # Controls ppart (algorithm selector and parameter controls)
         controls_box = QGroupBox("Controls")
         controls_layout = QVBoxLayout()
         controls_layout.setSpacing(16)
         controls_layout.setContentsMargins(16, 16, 16, 16)
 
-        # Algorithm selector
+        # Algorithm selector dropdown
         algo_layout = QHBoxLayout()
         algo_label = QLabel("Algorithm:")
         algo_label.setFixedWidth(100)
@@ -167,7 +174,7 @@ class EdgeExplorer(QWidget):
         reset_layout.addWidget(self.reset_btn)
         controls_layout.addLayout(reset_layout)
 
-        # --- Sobel controls
+        # Sobel controls. spin boxes
         self.sobel_box = QGroupBox("Sobel parameters")
         sobel_grid = QGridLayout()
         sobel_grid.setContentsMargins(14,14,14,14)
@@ -190,11 +197,12 @@ class EdgeExplorer(QWidget):
         sobel_dir_group.addWidget(self.sobel_dir_both)
         sobel_grid.addLayout(sobel_dir_group, 1, 1)
 
+        # for layout of all the sobel parameters
         self.sobel_box.setLayout(sobel_grid)
         controls_layout.addWidget(self.sobel_box)
         self.sobel_box.setVisible(False)
 
-        # --- Laplacian controls
+        #  Laplacian controls. spin boxes
         self.lap_box = QGroupBox("Laplacian parameters")
         lap_layout = QHBoxLayout()
         lap_layout.addWidget(QLabel("Kernel size (odd):"))
@@ -207,7 +215,7 @@ class EdgeExplorer(QWidget):
         controls_layout.addWidget(self.lap_box)
         self.lap_box.setVisible(False)
 
-        # --- Canny controls
+        # Canny controls. sliders
         self.canny_box = QGroupBox("Canny parameters")
         canny_grid = QGridLayout()
         canny_grid.setContentsMargins(14,14,14,14)
@@ -244,12 +252,13 @@ class EdgeExplorer(QWidget):
         canny_grid.addWidget(self.canny_sigma, 3, 1)
         canny_grid.addWidget(self.canny_sigma_val, 3, 2)
 
+        # for canny parameter layout
         self.canny_box.setLayout(canny_grid)
         controls_layout.addWidget(self.canny_box)
         self.canny_box.setVisible(False)
 
         # Spacer and note
-        note = QLabel("Tip: Adjust parameters; output updates in real-time.")
+        note = QLabel("Note: Adjust parameters; output updates in real-time.")
         note.setWordWrap(True)
         note.setStyleSheet("font-size: 18px; font-weight: 500; color: #999; padding: 8px;")
         controls_layout.addWidget(note)
@@ -260,6 +269,7 @@ class EdgeExplorer(QWidget):
         controls_box.setMaximumWidth(480)
 
         # Arrange main layout
+        # improved parts of the layout using DEEPSEEK as some of the text was overlapping.
         main_layout = QVBoxLayout()
         main_layout.addLayout(top_bar)
         main_layout.addSpacing(10)
@@ -290,7 +300,7 @@ class EdgeExplorer(QWidget):
             QMessageBox.information(self, "Save Output", "No processed image to save!")
             return
             
-        # Get save file path
+        # Get save file path (default path same as code)
         path, selected_filter = QFileDialog.getSaveFileName(
             self, 
             "Save Output Image", 
@@ -318,6 +328,7 @@ class EdgeExplorer(QWidget):
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"Failed to save image: {str(e)}")
 
+    # sets values back to defaults
     def _on_reset_parameters(self):
         """Reset parameters for the currently selected algorithm"""
         algo = self.algo_combo.currentText()
@@ -339,9 +350,10 @@ class EdgeExplorer(QWidget):
             self.canny_high_val.setText(str(self.canny_high.value()))
             self.canny_sigma_val.setText(str(self.canny_sigma.value() / 10.0))
         
-        # Reprocess with reset parameters (silent)
+        # image updates according to the reset parameters
         self._schedule_update()
 
+    # connecting all of the buttons and input parts together
     def _connect_signals(self):
         self.upload_btn.clicked.connect(self._on_upload)
         self.save_btn.clicked.connect(self._on_save_output)
@@ -362,6 +374,7 @@ class EdgeExplorer(QWidget):
         self.canny_blur.valueChanged.connect(lambda v: self._schedule_update())
         self.canny_sigma.valueChanged.connect(lambda v: (self.canny_sigma_val.setText(str(v/10.0)), self._schedule_update()))
 
+    # uploading image
     def _on_upload(self):
         path, _ = QFileDialog.getOpenFileName(self, "Open image", "", "Images (*.png *.jpg *.jpeg *.bmp)")
         if not path:
@@ -383,7 +396,7 @@ class EdgeExplorer(QWidget):
     def _on_algo_changed(self, idx):
         algo = self.algo_combo.currentText()
         
-        # show/hide relevant parameter groups
+        # show and hide relevant parameter groups. initially all the parameters for all filters were visible for every selection. a 'none' option was added later too. changed using DEEPSEEK
         self.sobel_box.setVisible(algo == "Sobel")
         self.lap_box.setVisible(algo == "Laplacian")
         self.canny_box.setVisible(algo == "Canny")
@@ -394,6 +407,7 @@ class EdgeExplorer(QWidget):
         # debounce updates for responsive UI
         self.update_timer.start()
 
+    # each algorithim processed in order to save copy of the output
     def _process_and_update_output(self):
         if self.original is None:
             return
@@ -426,6 +440,7 @@ class EdgeExplorer(QWidget):
         
         self._update_output_display()
 
+    # updating the input display so that the image does not contradict with the input display part
     def _update_input_display(self):
         if self.original is None:
             self.input_display.clear()
@@ -445,6 +460,8 @@ class EdgeExplorer(QWidget):
         qimg = self._bgr_to_qimage(disp)
         self.input_display.setPixmap(QPixmap.fromImage(qimg))
 
+    # issue where the display size of the output image was increasinf everytime a parameter was modified or any filter. fixed using CHATGPT
+    # updating ouptut display for cohesions
     def _update_output_display(self):
         if self.processed is None:
             self.output_display.clear()
@@ -476,6 +493,7 @@ class EdgeExplorer(QWidget):
         qimg = QImage(rgb.data, w, h, bytes_per_line, QImage.Format_RGB888)
         return qimg.copy()
 
+    # the image size remained small even when the window was resized. added automatic scaling using CHATGPT
     def resizeEvent(self, event):
         super().resizeEvent(event)
         # Automatically rescale images when window resizes
@@ -483,7 +501,7 @@ class EdgeExplorer(QWidget):
         self._update_output_display()
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    win = EdgeExplorer(display_size=480)
+    app = QApplication(sys.argv) # pyqt instance 
+    win = EdgeExplorer(display_size=480) # creates main window
     win.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec_()) # starts event loop
