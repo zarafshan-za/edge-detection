@@ -18,7 +18,7 @@ Assignment 1 for the course Introduction to Computer Vision. This is a Python ba
 ## Installation & Usage
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/edge-detection.git
+git clone https://github.com/zarafshan-za/edge-detection.git
 ```
 2. Enter the project folder
 ```bash
